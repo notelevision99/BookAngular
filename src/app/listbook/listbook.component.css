@@ -1,0 +1,25 @@
+.body-content{
+    
+}
+.table-content{
+    margin: 50px;
+}
+.pagingation{
+    display: flex;
+    justify-content: space-around;
+}
+.pagingation-items{
+    display: flex;
+ 
+    
+}
+.pagingation-items > li {
+    list-style-type: none;
+    padding: 5px
+}
+.pagingation-items > li:hover{
+    font-weight: 500;
+    background-color: #000;
+    color: #ccc;
+    cursor: pointer;
+}

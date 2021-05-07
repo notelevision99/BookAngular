@@ -1,0 +1,23 @@
+.header{
+    display: flex;
+    background-color: #282a35;
+    width: 1920px;
+    height: 64px;
+}
+.logo{
+    display: flex;
+}
+.logo-text{
+    font-size: 24px;
+    color: #ccc;
+    font-weight: 500;
+    line-height: 64px;
+    align-items: center;
+    padding-left: 20px;
+}
+.logo-icon{
+    line-height: 64px;
+    margin-left: 30px;
+    font-size: 32px;
+    color: #ccc;
+}
