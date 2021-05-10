@@ -1,21 +1,20 @@
 
 
-<router-outlet>
 <app-header></app-header>
-<div class="content">
-    <div class="sidebar">
-        <app-sidebar></app-sidebar>
+
+<router-outlet>
+    <div class="content">
+        <div class="sidebar">
+            <app-sidebar></app-sidebar>
+        </div>
+        <div class="content-body">
+            <app-book></app-book>
+        </div>
     </div>
-    <div class="content-body">
-        <app-listbook></app-listbook>
-    </div>
-   
-</div>
-
-
-
-
-
-
-
 </router-outlet>
+
+
+
+
+
+
