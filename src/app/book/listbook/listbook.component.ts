@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { PageSizeChangeEvent } from '@progress/kendo-angular-pager';
 import { BookModel } from 'src/app/model/BookModel';
+import { PagingModel } from 'src/app/model/PagingModel';
 import { BookServiceService } from '../../services/book-service.service';
+
 
 @Component({
   selector: 'app-listbook',
@@ -12,61 +16,67 @@ export class ListbookComponent implements OnInit {
 
   bookModel: BookModel;
   books: any;
-  selectedTotalRecord = 0;
-  totalPage = 0;
-  totalCount = 0;
-  skip = 0;
-  pageSize = 2;
-
+  pagingModel: PagingModel = new PagingModel();
   gridView: GridDataResult;
+  idUpDel: string;
+  searchString: string;
 
-  constructor(public service: BookServiceService) {
+  // dialog field 
+  isActive = false;
 
-  }
+
+  public searchForm: FormGroup = new FormGroup({
+    searchString: new FormControl('')
+  })
+  constructor(public service: BookServiceService) { }
 
   ngOnInit() {
     this.loadBooks();
   }
 
-  onPageChange(page: PageChangeEvent) {
-    this.skip = page.skip 
+  onPageChange(e: PageChangeEvent) {
+    this.pagingModel.skip = e.skip;
+    this.pagingModel.pageSize = e.take;
+    this.pagingModel.currentPage = Math.ceil((this.pagingModel.skip / this.pagingModel.pageSize) + 1)
     this.loadBooks();
   }
 
-  loadBooks() {
-    var getBookCallback = (this.skip === 0) ? this.service.GetBook() : this.service.GetBook(this.pageSize, this.skip);
+  onPageSizeChange(e: PageSizeChangeEvent) {
+    this.pagingModel.pageSize = Number(e.newPageSize);
+    this.loadBooks();
+  }
+
+  editHandler({ dataItem }) {
+    this.idUpDel = dataItem.bookId
+  }
+
+  removeHandler({ dataItem }) {
+    this.idUpDel = dataItem.bookId
+  }
+
+  onEditBook() {
+    this.isActive = true;
+
+  }
+
+  onDeleteBook() {
+    this.service.DeleteBook(this.idUpDel).subscribe(res => {
+      this.loadBooks();
+    });
+  }
+
+  onSearch() {
+    this.searchString = this.searchForm.controls['searchString'].value;
+    this.loadBooks(this.searchString);
+  }
+
+  private loadBooks(searchString?: string) {
+    var getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 && searchString != null) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, searchString);
     getBookCallback.subscribe((book: BookModel) => {
       this.bookModel = book;
-      this.totalCount = this.bookModel.totalCount
-      console.log(this.totalPage)
-      
+      this.pagingModel.totalCount = this.bookModel.totalCount
       this.books = this.bookModel.books
       this.gridView = this.books;
     });
-
-
-    // if (this.skip === 0) {
-    //   this.service.GetBook().subscribe((book: BookModel) => {
-    //     this.bookModel = book;
-    //     this.totalPage = this.bookModel.totalPage;
-    //     console.log(this.bookModel.totalPage)
-    //     this.books = this.bookModel.books
-    //     this.gridView = this.books;
-    //   });
-    // }
-    // else {
-    //   this.service.GetBook(this.pageSize, this.skip).subscribe((book: BookModel) => {
-    //     this.bookModel = book;
-    //     console.log(this.bookModel.totalPage)
-    //     this.totalPage = this.bookModel.totalPage;
-    //     this.books = this.bookModel.books
-    //     this.gridView = this.books;
-    //     console.log("skip ", this.skip)
-    //     console.log("skip change")
-    //   });
-    // }
-  }
-  onClick() {
-
   }
 }

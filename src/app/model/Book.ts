@@ -1,5 +1,6 @@
 export class Book{
-    BookId: Number;
-    BookName: String;
-    BookDescription: String;
+    bookId: String;
+    bookName: String;
+    bookType : String;
+    description: String;
 }

@@ -7,6 +7,5 @@ export class BookModel {
     totalCount : number;
     previousPage: number;
     nextPage: number;
-
     books: Book[]
 }

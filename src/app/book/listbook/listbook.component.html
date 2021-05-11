@@ -1,49 +1,38 @@
-
 <div class="body-content">
   <div class="crud-content">
-    <button class="btn btn-create" kendoButton
-    (click)="onClick()">
-    <a routerLink="/addbook"><span routerLink="/addbook" class="text-create">Add Book</span></a>
-  </button>
+    <button kendoButton (click)="onEditBook()">Add Book</button>
+    <app-create-book [isActive]="isActive" class="text-create"></app-create-book>
+    <div class="search-field">
+      <form [formGroup]="searchForm">
+        <kendo-formfield>
+          <kendo-textbox formControlName="searchString" #searchString required></kendo-textbox>
+          <button kendoButton (click)="onSearch()">Search</button>
+        </kendo-formfield>
+      </form>
+    </div>
   </div>
   <div class="table-content">
-    
-    <!-- <table class="table" >
-      <thead>
-        <tr>
-          <th>Book Id</th>
-          <th>Book Name</th>
-          <th>Book Description</th>
-        </tr>
-     
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of books">
-          <td>{{item.bookId}}</td>
-          <td>{{item.bookName}}</td>
-          <td>{{item.description}}</td>
-        </tr>
-      </tbody>
-    </table> -->
-    <kendo-grid [kendoGridBinding]="gridView" >
-      <kendo-grid-column field="bookId" title="ID" >
+    <kendo-grid [kendoGridBinding]="gridView" (edit)="editHandler($event)" (remove)="removeHandler($event)">
+      <kendo-grid-column field="bookId" title="ID">
       </kendo-grid-column>
-      <kendo-grid-column field="bookName" title="Book Name" >
+      <kendo-grid-column field="bookName" title="Book Name">
       </kendo-grid-column>
       <kendo-grid-column field="bookType" title="Book Type">
       </kendo-grid-column>
       <kendo-grid-column field="description" title="Description">
       </kendo-grid-column>
-     
-      
+
+      <kendo-grid-command-column title="Edit">
+        <ng-template kendoGridCellTemplate>
+          <!-- <button kendoGridEditCommand class="k-primary" routerLink="/editbook/{{idUpDel}}">Edit</button> -->
+          <button kendoGridEditCommand (click)="onEditBook()" class="k-primary">Edit</button>
+          <button kendoGridRemoveCommand (click)="onDeleteBook()">Remove</button>
+        </ng-template>
+      </kendo-grid-command-column>
     </kendo-grid>
-    <kendo-datapager
-    [style.width.%]="100"
-    [pageSize]="pageSize"
-    [skip]="skip"
-    [total]="totalCount"
-    (pageChange)="onPageChange($event)">
-  </kendo-datapager>
+    <kendo-datapager [style.width.%]="100" [pageSize]="pagingModel.pageSize" [skip]="pagingModel.skip"
+      [total]="pagingModel.totalCount" (pageSizeChange)="onPageSizeChange($event)" (pageChange)="onPageChange($event)">
+    </kendo-datapager>
   </div>
 </div>
-<router-outlet></router-outlet> 
+<router-outlet></router-outlet>

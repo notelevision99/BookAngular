@@ -14,10 +14,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { Routes, RouterModule } from '@angular/router';
 import { PagerModule } from '@progress/kendo-angular-pager';
-
-
+import { DialogModule } from '@progress/kendo-angular-dialog';
 const routes: Routes = [
   { path: 'addbook', component: CreateBookComponent },
+  { path: 'editbook/:id', component: UpdateBookComponent}
 ];
 @NgModule({
     declarations: [									     
@@ -35,19 +35,19 @@ const routes: Routes = [
       SliderModule ,
       FormsModule,
       ReactiveFormsModule,
-      InputsModule,
+      InputsModule, 
       LabelModule,
+      DialogModule,
       RouterModule.forRoot(routes),
       BrowserAnimationsModule,
-      PagerModule,
     ],
     exports: [
         ListbookComponent,
         CreateBookComponent,
         UpdateBookComponent,
         RouterModule,
+        
     ],
-    
     providers: [],
     bootstrap: []
   })
