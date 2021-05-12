@@ -1,6 +1,6 @@
 .header{
     display: flex;
-    background-color: #282a35;
+    background-color: #282a35f0;
     width: 1920px;
     height: 64px;
 }
@@ -9,15 +9,16 @@
 }
 .logo-text{
     font-size: 24px;
-    color: #ccc;
+    color: #fff;
     font-weight: 500;
     line-height: 64px;
     align-items: center;
     padding-left: 20px;
+    cursor: pointer;
 }
 .logo-icon{
     line-height: 64px;
     margin-left: 30px;
     font-size: 32px;
-    color: #ccc;
+    color: #fff;
 }
