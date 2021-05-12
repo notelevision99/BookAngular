@@ -65,18 +65,19 @@ export class UpsertBookComponent implements OnInit {
     this.bookData = Object.assign({}, this.registerForm.value)
     if(this.bookData.bookId == null){ 
       this.service.CreateBook(this.bookData).subscribe(() => {
-        this.service.GetBook();     
+        this.isReloadBooks = true;
+        console.log("submit add",this.isReloadBooks)
       });
     }
     else{
       this.service.EditBook(this.bookData.bookId.toString(), this.bookData).subscribe(() => {
-        this.service.GetBook(); 
+        this.isReloadBooks = true;
+        console.log("submit edit",this.isReloadBooks)
       })
     }
     this.service.GetBook();
     this.isActive = false;
     this.cancel.emit();
-    console.log(this.isReloadBooks)
     this.show();
 
   }

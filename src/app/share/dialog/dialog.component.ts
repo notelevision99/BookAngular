@@ -44,5 +44,6 @@ export class DialogComponent implements OnInit {
     if(this.bookData.bookId !== null){
       this.service.DeleteBook(this.bookData.bookId.toString()).subscribe()
     }
+    this.show();
   }
 }

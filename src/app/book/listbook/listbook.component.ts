@@ -35,9 +35,10 @@ export class ListbookComponent implements OnInit {
   })
   constructor(public service: BookServiceService
     ) {}
-
+  
   ngOnInit() {
       this.loadBooks();
+      console.log("On init", this.isReloadBooks)
       if(this.isReloadBooks)
       {
         this.loadBooks();
@@ -60,6 +61,7 @@ export class ListbookComponent implements OnInit {
     this.isActive = true
     this.book = new Book();
     this.isNew = true;
+    this.isReloadBooks = true;
   }
 
   editHandler({ dataItem }) {
@@ -67,12 +69,14 @@ export class ListbookComponent implements OnInit {
     this.book = dataItem
     this.isActive = true;
     this.isNew = false;
+    this.isReloadBooks = true;
   }
 
   removeHandler({ dataItem }) {
     this.idUpDel = dataItem.bookId
     this.isActiveDeleteDialog = true
     this.book = dataItem  
+    this.isReloadBooks = true;
   }
 
   cancelHandler(){

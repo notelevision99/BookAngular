@@ -47,8 +47,7 @@ const routes: Routes = [
     exports: [
         ListbookComponent,
         UpsertBookComponent,
-        RouterModule,
-        
+        RouterModule   
     ],
     providers: [],
     bootstrap: []
