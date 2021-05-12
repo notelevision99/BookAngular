@@ -8,16 +8,12 @@ import { SidebarComponent } from './sharedModule/sidebar/sidebar.component';
 import { HeaderComponent } from './sharedModule/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BookModule } from "./book/book.module";
-import { GridModule, PagerTemplateDirective } from '@progress/kendo-angular-grid';
+import { PagerTemplateDirective } from '@progress/kendo-angular-grid';
 import { Routes, RouterModule } from '@angular/router'
 import { ListbookComponent } from './book/listbook/listbook.component';
 import { BookComponent } from './book/book.component';
-import { DialogModule, DialogsModule } from '@progress/kendo-angular-dialog';
-import { InputsModule } from '@progress/kendo-angular-inputs';
-import { LabelModule } from '@progress/kendo-angular-label';
-
-
-
+import { DialogsModule } from '@progress/kendo-angular-dialog';
+import { NotificationModule } from '@progress/kendo-angular-notification';
 
 const routes: Routes = [
   { path: 'book', component: ListbookComponent },
@@ -37,6 +33,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     DialogsModule,
+    NotificationModule,
    
   ],
   exports: [RouterModule],

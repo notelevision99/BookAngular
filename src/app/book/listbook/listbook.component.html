@@ -1,7 +1,6 @@
 <div class="body-content">
   <div class="crud-content">
-    <button kendoButton (click)="onEditBook()">Add Book</button>
-    <app-create-book [isActive]="isActive" class="text-create"></app-create-book>
+    
     <div class="search-field">
       <form [formGroup]="searchForm">
         <kendo-formfield>
@@ -12,8 +11,13 @@
     </div>
   </div>
   <div class="table-content">
-    <kendo-grid [kendoGridBinding]="gridView" (edit)="editHandler($event)" (remove)="removeHandler($event)">
-      <kendo-grid-column field="bookId" title="ID">
+    <kendo-grid [kendoGridBinding]="gridView" (edit)="editHandler($event)" (remove)="removeHandler($event)"
+      (add)="addHandler()"
+    >
+      <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand>Add new</button>
+    </ng-template>
+      <kendo-grid-column field="bookId" title="ID" >
       </kendo-grid-column>
       <kendo-grid-column field="bookName" title="Book Name">
       </kendo-grid-column>
@@ -25,11 +29,18 @@
       <kendo-grid-command-column title="Edit">
         <ng-template kendoGridCellTemplate>
           <!-- <button kendoGridEditCommand class="k-primary" routerLink="/editbook/{{idUpDel}}">Edit</button> -->
-          <button kendoGridEditCommand (click)="onEditBook()" class="k-primary">Edit</button>
-          <button kendoGridRemoveCommand (click)="onDeleteBook()">Remove</button>
+          <button kendoGridEditCommand class="k-primary">Edit</button>
+          <button kendoGridRemoveCommand >Remove</button>
         </ng-template>
       </kendo-grid-command-column>
     </kendo-grid>
+    <div *ngIf="isActive">
+      <app-upsert-book [isNew]= "isNew" [isReloadBooks]="isReloadBooks" [isActive]="isActive" [bookData]= "book" (cancel)="cancelHandler()" class="text-create">  
+      </app-upsert-book>
+    </div>
+    <div *ngIf="isActiveDeleteDialog">
+      <app-dialog [isActive]="isActiveDeleteDialog" [bookData]="book" (cancel)="cancelHandler()" ></app-dialog>
+    </div>
     <kendo-datapager [style.width.%]="100" [pageSize]="pagingModel.pageSize" [skip]="pagingModel.skip"
       [total]="pagingModel.totalCount" (pageSizeChange)="onPageSizeChange($event)" (pageChange)="onPageChange($event)">
     </kendo-datapager>

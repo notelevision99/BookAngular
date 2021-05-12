@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { PageSizeChangeEvent } from '@progress/kendo-angular-pager';
+import { Book } from 'src/app/model/Book';
 import { BookModel } from 'src/app/model/BookModel';
 import { PagingModel } from 'src/app/model/PagingModel';
 import { BookServiceService } from '../../services/book-service.service';
@@ -15,23 +16,32 @@ import { BookServiceService } from '../../services/book-service.service';
 export class ListbookComponent implements OnInit {
 
   bookModel: BookModel;
-  books: any;
+  booksDataGrid: any;
+  book: Book;
   pagingModel: PagingModel = new PagingModel();
   gridView: GridDataResult;
   idUpDel: string;
   searchString: string;
 
   // dialog field 
-  isActive = false;
-
-
+  public isActive = false;
+  //check dialog create or edit
+  public isNew = false;
+  //loadBook toggle
+  public isReloadBooks = false;
+  public isActiveDeleteDialog = false;
   public searchForm: FormGroup = new FormGroup({
-    searchString: new FormControl('')
+    searchString: new FormControl()
   })
-  constructor(public service: BookServiceService) { }
+  constructor(public service: BookServiceService
+    ) {}
 
   ngOnInit() {
-    this.loadBooks();
+      this.loadBooks();
+      if(this.isReloadBooks)
+      {
+        this.loadBooks();
+      }
   }
 
   onPageChange(e: PageChangeEvent) {
@@ -46,37 +56,57 @@ export class ListbookComponent implements OnInit {
     this.loadBooks();
   }
 
+  addHandler(){
+    this.isActive = true
+    this.book = new Book();
+    this.isNew = true;
+  }
+
   editHandler({ dataItem }) {
-    this.idUpDel = dataItem.bookId
+    this.idUpDel = dataItem.bookId 
+    this.book = dataItem
+    this.isActive = true;
+    this.isNew = false;
   }
 
   removeHandler({ dataItem }) {
     this.idUpDel = dataItem.bookId
+    this.isActiveDeleteDialog = true
+    this.book = dataItem  
+  }
+
+  cancelHandler(){
+    this.isActive = false;
+    this.isActiveDeleteDialog = false;
+    //Empty Data  
+    this.book = new Book();
   }
 
   onEditBook() {
-    this.isActive = true;
-
-  }
-
-  onDeleteBook() {
-    this.service.DeleteBook(this.idUpDel).subscribe(res => {
-      this.loadBooks();
-    });
+    this.isActive = false;
   }
 
   onSearch() {
-    this.searchString = this.searchForm.controls['searchString'].value;
+    var searchText = this.searchForm.controls['searchString'].value;
+    this.searchString = searchText;
     this.loadBooks(this.searchString);
+    this.loadBooks();
   }
 
-  private loadBooks(searchString?: string) {
-    var getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 && searchString != null) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, searchString);
+  public loadBooks(searchString?: string) {
+    var getBookCallback;
+    if(searchString == null)
+    {
+      getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 ) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage);
+    }
+    else if(searchString !== null){
+      getBookCallback = (this.pagingModel.skip === 0 && this.pagingModel.pageSize == 2 ) ? this.service.GetBook() : this.service.GetBook(this.pagingModel.pageSize, this.pagingModel.currentPage, this.searchString);
+    }
     getBookCallback.subscribe((book: BookModel) => {
       this.bookModel = book;
       this.pagingModel.totalCount = this.bookModel.totalCount
-      this.books = this.bookModel.books
-      this.gridView = this.books;
+      this.booksDataGrid = this.bookModel.books
+      this.gridView = this.booksDataGrid;
     });
   }
 }

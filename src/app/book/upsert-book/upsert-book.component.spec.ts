@@ -1,23 +1,21 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
-import { UpdateBookComponent } from './update-book.component';
+import { UpsertBookComponent } from './upsert-book.component';
 
-describe('UpdateBookComponent', () => {
-  let component: UpdateBookComponent;
-  let fixture: ComponentFixture<UpdateBookComponent>;
+describe('CreateBookComponent', () => {
+  let component: UpsertBookComponent;
+  let fixture: ComponentFixture<UpsertBookComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UpdateBookComponent ]
+      declarations: [ UpsertBookComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpdateBookComponent);
+    fixture = TestBed.createComponent(UpsertBookComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

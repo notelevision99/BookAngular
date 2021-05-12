@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from "@angular/common/http";
 import { ListbookComponent } from './listbook/listbook.component';
-import { CreateBookComponent } from './create-book/create-book.component';
-import { UpdateBookComponent } from './update-book/update-book.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonsModule } from '@progress/kendo-angular-buttons';
@@ -15,15 +13,18 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { Routes, RouterModule } from '@angular/router';
 import { PagerModule } from '@progress/kendo-angular-pager';
 import { DialogModule } from '@progress/kendo-angular-dialog';
+import { NotificationModule } from '@progress/kendo-angular-notification';
+import { UpsertBookComponent } from './upsert-book/upsert-book.component';
+import { ShareModule } from '../share/share.module';
+
 const routes: Routes = [
-  { path: 'addbook', component: CreateBookComponent },
-  { path: 'editbook/:id', component: UpdateBookComponent}
+  // { path: 'addbook', component: CreateBookComponent },
+  // { path: 'editbook/:id', component: UpdateBookComponent}
 ];
 @NgModule({
     declarations: [									     
         ListbookComponent,
-        CreateBookComponent,
-        UpdateBookComponent,
+        UpsertBookComponent
      ],
     imports: [
       BrowserModule,
@@ -38,13 +39,14 @@ const routes: Routes = [
       InputsModule, 
       LabelModule,
       DialogModule,
+      ShareModule,
+      NotificationModule,
       RouterModule.forRoot(routes),
       BrowserAnimationsModule,
     ],
     exports: [
         ListbookComponent,
-        CreateBookComponent,
-        UpdateBookComponent,
+        UpsertBookComponent,
         RouterModule,
         
     ],

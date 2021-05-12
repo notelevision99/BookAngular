@@ -18,9 +18,10 @@ export class BookServiceService {
   
   GetBook(pageSize?: number, pageNumber?: number, searchString? : string): Observable<BookModel> {
     let result: any;
+    //Non Search
     if(searchString == null){
       if (pageSize !== undefined && pageNumber !== undefined) {
-        const urlPaging = `https://localhost:44317/api/ProjectCompare/book?pageSize=${pageSize}&pageNumber=${pageNumber}`
+        const urlPaging = `${this.baseUrl}/?pageSize=${pageSize}&pageNumber=${pageNumber}`
         result = this.http.get(urlPaging);
         return result;
       } else {
@@ -28,15 +29,17 @@ export class BookServiceService {
         return result
       }
     }
-    else{
-      if (pageSize !== undefined && pageNumber !== undefined) {
-        const urlPaging = `https://localhost:44317/api/ProjectCompare/book?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`
+    //Search
+    else if(searchString != null){
+      if (pageSize !== undefined && pageNumber !== undefined) {      
+        const urlPaging =  `https://localhost:44317/api/ProjectCompare/book?pageSize=${pageSize}&pageNumber=${pageNumber}&searchString=${searchString}`
         result = this.http.get(urlPaging);
         return result;
       } else {
-        result = this.http.get(this.baseUrlPaging);
-        return result
-      }
+        const urlPaging = `https://localhost:44317/api/ProjectCompare/book?${searchString}`
+        result = this.http.get(urlPaging);
+        return result;
+      } 
     }
     
   }
@@ -49,7 +52,6 @@ export class BookServiceService {
   }
   CreateBook(book: Book) : Observable<any> {
     const headers = { 'Content-Type': 'application/json' }; // ... Set content type to JSON
-
     return this.http.post(this.baseUrl, JSON.stringify(book), {'headers': headers});
   }
   EditBook(id : string,book: Book) : Observable<any> {
